@@ -33,6 +33,10 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     background-color: var(--bg-color);
     color: var(--text-main);
@@ -99,6 +103,7 @@ a {
 .gradient-text {
     background: linear-gradient(90deg, #ffffff, var(--text-muted));
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -491,5 +496,12 @@ footer {
 
     .mockup-content .stats-row {
         grid-template-columns: 1fr !important;
+    }
+}
+
+/* Utility for grid spans */
+@media (min-width: 961px) {
+    .col-span-2 {
+        grid-column: span 2;
     }
 }
