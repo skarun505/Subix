@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeadOS Platform | Subix</title>
+    <meta name="description" content="Centralized lead management, funnel tracking, and automated follow-ups.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- Nav -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">SUBIX<span>.</span>IO</a>
+        <div class="mobile-toggle"><i class="fas fa-bars"></i></div>
+        <ul class="nav-links">
+            <li><a href="services.html">The Stack</a></li>
+            <li><a href="platform.html" class="active">LeadOS</a></li>
+            <li><a href="about.html">Manifesto</a></li>
+            <li><a href="careers.html">Join Us</a></li>
+            <li><a href="contact.html" class="cta-btn">Start Building</a></li>
+        </ul>
+    </nav>
+    <div class="nav-links mobile-menu" id="mobileMenu"></div>
+
+    <!-- Hero -->
+    <header class="hero" style="min-height: 80vh;">
+        <div class="container" style="text-align: center;">
+            <div class="hero-tag"><span>●</span> INTERNAL SAAS PLATFORM</div>
+            <h1>Subix <span class="highlight">LeadOS</span></h1>
+            <p style="margin: 0 auto;">
+                Don't just get a service. Get an ecosystem.<br>
+                Every client gets access to our proprietary growth OS.
+            </p>
+
+            <div class="dashboard-mockup reveal-zoom"
+                style="margin-top: 4rem; overflow: hidden; border-radius: 16px; border: 1px solid #333; position: relative; background: #0f0f0f;">
+                <!-- Mockup Visual -->
+                <div
+                    style="padding: 1rem; border-bottom: 1px solid #222; display: flex; gap: 1rem; background: #161616;">
+                    <div style="width: 12px; height: 12px; background: #fe5f57; border-radius: 50%;"></div>
+                    <div style="width: 12px; height: 12px; background: #febc2e; border-radius: 50%;"></div>
+                    <div style="width: 12px; height: 12px; background: #28c840; border-radius: 50%;"></div>
+                </div>
+                <div class="mockup-content"
+                    style="padding: 2rem; display: grid; grid-template-columns: 200px 1fr; gap: 2rem; min-height: 400px;">
+                    <div class="sidebar" style="background: #111; border-radius: 8px; padding: 1rem;">
+                        <div
+                            style="height: 20px; width: 80%; background: #333; border-radius: 4px; margin-bottom: 2rem;">
+                        </div>
+                        <div
+                            style="height: 10px; width: 100%; background: #222; border-radius: 4px; margin-bottom: 1rem;">
+                        </div>
+                        <div
+                            style="height: 10px; width: 100%; background: #222; border-radius: 4px; margin-bottom: 1rem;">
+                        </div>
+                        <div
+                            style="height: 10px; width: 100%; background: #222; border-radius: 4px; margin-bottom: 1rem;">
+                        </div>
+                    </div>
+                    <div class="main-view" style="display: grid; grid-template-rows: 100px 1fr; gap: 1rem;">
+                        <div class="stats-row" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                            <div
+                                style="background: #1a1a1a; border-radius: 8px; padding: 1rem; border: 1px solid #333;">
+                                <div style="font-size: 0.8rem; color: #666;">Total Leads</div>
+                                <div style="font-size: 1.5rem; font-weight: bold; color: #fff;">1,248</div>
+                            </div>
+                            <div
+                                style="background: #1a1a1a; border-radius: 8px; padding: 1rem; border: 1px solid #333;">
+                                <div style="font-size: 0.8rem; color: #666;">Conv. Rate</div>
+                                <div style="font-size: 1.5rem; font-weight: bold; color: #ccff00;">4.8%</div>
+                            </div>
+                            <div
+                                style="background: #1a1a1a; border-radius: 8px; padding: 1rem; border: 1px solid #333;">
+                                <div style="font-size: 0.8rem; color: #666;">Revenue</div>
+                                <div style="font-size: 1.5rem; font-weight: bold; color: #fff;">$124k</div>
+                            </div>
+                        </div>
+                        <div class="chart-area"
+                            style="background: #1a1a1a; border-radius: 8px; border: 1px solid #333; position: relative;">
+                            <!-- CSS Grid for chart lines -->
+                            <div
+                                style="position: absolute; bottom: 20px; left: 20px; width: 90%; height: 2px; background: #333;">
+                            </div>
+                            <div
+                                style="position: absolute; bottom: 60px; left: 20px; width: 90%; height: 1px; background: #222;">
+                            </div>
+                            <div
+                                style="position: absolute; bottom: 100px; left: 20px; width: 90%; height: 1px; background: #222;">
+                            </div>
+                            <!-- A line -->
+                            <svg width="100%" height="80%" viewBox="0 0 500 200"
+                                style="position: absolute; bottom: 20px; left: 0;">
+                                <path d="M20,180 Q100,100 200,140 T480,20" fill="none" stroke="#ccff00"
+                                    stroke-width="3" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Features -->
+    <section class="features">
+        <div class="container grid-2">
+            <div>
+                <h2>Centralized Command Center</h2>
+                <p>No more messy spreadsheets. Track every lead source, funnel stage, and conversion metric in one
+                    place.</p>
+                <ul style="list-style: none; margin-top: 2rem;">
+                    <li style="margin-bottom: 1rem;"><i class="fas fa-check-circle highlight"></i> <strong>Automated
+                            Follow-ups:</strong> Email & WhatsApp sequences triggered by user behavior.</li>
+                    <li style="margin-bottom: 1rem;"><i class="fas fa-check-circle highlight"></i> <strong>Funnel
+                            Clarity:</strong> See exactly where drop-offs happen.</li>
+                    <li style="margin-bottom: 1rem;"><i class="fas fa-check-circle highlight"></i> <strong>Source
+                            Tracking:</strong> Know which ad campaign drove the sale.</li>
+                </ul>
+            </div>
+            <div style="display:grid; gap: 1rem;">
+                <div class="card" style="padding: 1.5rem;">
+                    <i class="fas fa-bolt highlight"></i>
+                    <h4>Real-time Sync</h4>
+                    <p style="font-size: 0.9rem;">2-way sync with your CRM.</p>
+                </div>
+                <div class="card" style="padding: 1.5rem;">
+                    <i class="fas fa-mobile highlight"></i>
+                    <h4>Mobile Ready</h4>
+                    <p style="font-size: 0.9rem;">Track growth on the go.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Integrations -->
+    <section class="integrations" style="text-align: center; border-top: 1px solid #111;">
+        <div class="container">
+            <h5 style="color: #666; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 2rem;">Seamless
+                Interactions With</h5>
+            <div style="display: flex; gap: 3rem; justify-content: center; flex-wrap: wrap; opacity: 0.5;">
+                <span style="font-size: 1.5rem; font-weight: 700;">HubSpot</span>
+                <span style="font-size: 1.5rem; font-weight: 700;">Salesforce</span>
+                <span style="font-size: 1.5rem; font-weight: 700;">Shopify</span>
+                <span style="font-size: 1.5rem; font-weight: 700;">Meta</span>
+                <span style="font-size: 1.5rem; font-weight: 700;">Google</span>
+                <span style="font-size: 1.5rem; font-weight: 700;">Zapier</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <a href="#" class="logo">SUBIX<span>.</span>IO</a>
+                <p style="margin-top: 1rem; font-size: 0.9rem;">
+                    Building the future of automated business.<br>
+                    © 2026 Subix Inc.
+                </p>
+            </div>
+            <div class="footer-links">
+                <h4>Platform</h4>
+                <ul>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="platform.html">LeadOS</a></li>
+                    <li><a href="about.html">Why Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Connect</h4>
+                <ul>
+                    <li><a href="https://twitter.com" target="_blank">Twitter / X</a></li>
+                    <li><a href="https://linkedin.com" target="_blank">LinkedIn</a></li>
+                    <li><a href="mailto:contact@subix.io">contact@subix.io</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
