@@ -140,14 +140,19 @@ body::before {
 }
 
 .logo {
-    font-family: var(--font-heading);
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: -1px;
+    display: flex;
+    align-items: center;
 }
 
-.logo span {
-    color: var(--primary-lime);
+.logo img {
+    height: 56px;
+    width: auto;
+    display: block;
+}
+
+.footer-brand .logo img {
+    height: 40px;
+    /* Slightly larger in footer */
 }
 
 .nav-links {
@@ -385,6 +390,171 @@ footer {
     transform: translate(0, 0) scale(1);
 }
 
+/* Services Page Refactored Styles */
+.services-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8rem;
+}
+
+.service-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.service-block.reverse {
+    direction: rtl;
+}
+
+.service-block.reverse .service-item {
+    direction: ltr;
+}
+
+.service-item .step-num {
+    font-size: 4rem;
+    opacity: 0.1;
+    font-weight: 900;
+    display: block;
+    line-height: 1;
+    margin-bottom: 1rem;
+}
+
+.service-item h3 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.service-features {
+    list-style: none;
+    margin-top: 1.5rem;
+    color: var(--text-muted);
+}
+
+.service-features li {
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.visual {
+    background: #111;
+    height: 400px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.5s;
+}
+
+.visual i {
+    font-size: 6rem;
+    color: #222;
+    transition: 0.5s;
+}
+
+.service-block:hover .visual {
+    border-color: var(--primary-lime);
+}
+
+.service-block:hover .visual i {
+    color: var(--primary-lime);
+    transform: scale(1.1);
+}
+
+/* Architecture Diagram Component */
+.architecture-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: flex-start;
+}
+
+.phase-item {
+    margin-bottom: 2rem;
+    border-left: 2px solid #333;
+    padding-left: 1.5rem;
+}
+
+.phase-item.phase-active {
+    border-left-color: var(--primary-lime);
+}
+
+.phase-item h4 {
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.phase-item p {
+    font-size: 0.95rem;
+}
+
+.arch-card {
+    background: #111;
+    border-radius: 16px;
+    padding: 2.5rem;
+    border: 1px solid #222;
+}
+
+.arch-flow {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.arch-node {
+    background: #222;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.arch-arrow {
+    color: #444;
+}
+
+.arch-logic {
+    border: 1px dashed #333;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+
+.arch-label {
+    color: var(--primary-lime);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.arch-text {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 0.3rem;
+    line-height: 1.4;
+}
+
+.arch-output {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.arch-badge {
+    background: var(--primary-lime);
+    color: #000;
+    padding: 0.6rem 1.2rem;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
 /* Responsive */
 /* Mobile Improvements */
 @media (max-width: 768px) {
@@ -394,6 +564,7 @@ footer {
 
     h1 {
         font-size: 2.8rem;
+        line-height: 1.1;
     }
 
     h2 {
@@ -402,6 +573,142 @@ footer {
 
     .container {
         padding: 0 1.5rem;
+    }
+
+    /* Products Page Mobile Fixes */
+    .products-section .grid-2 {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .products-section .card {
+        padding: 2rem 1.5rem;
+    }
+
+    .products-section .card h3 {
+        font-size: 1.3rem;
+    }
+
+    .products-section .card p {
+        font-size: 1rem;
+    }
+
+    /* Hospital Management Card Mobile Span Fix */
+    .col-span-2 {
+        grid-column: span 1 !important;
+    }
+
+    .faq-item h4 {
+        font-size: 1.1rem;
+    }
+
+    /* Services/Stack Page Mobile Fixes */
+    .services-list .grid-2 {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 3rem;
+    }
+
+    .service-item {
+        text-align: center;
+        order: 1 !important;
+        /* Forces text to always be after or before visual consistently */
+    }
+
+    /* Services/Stack Page Mobile Fixes - Watermark Style */
+    .services-grid {
+        gap: 2rem;
+    }
+
+    .service-block {
+        display: block !important;
+        position: relative;
+        padding: 4rem 1.5rem;
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-md);
+        background: rgba(10, 10, 10, 0.5);
+        overflow: hidden;
+        direction: ltr !important;
+        margin-bottom: 1.5rem;
+    }
+
+    .service-item {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+    }
+
+    .service-item .step-num {
+        font-size: 5rem;
+        margin-bottom: 0;
+        position: absolute;
+        top: -1rem;
+        right: 0;
+    }
+
+    .service-item h3 {
+        font-size: 1.8rem;
+        margin-top: 1rem;
+    }
+
+    .service-features {
+        display: inline-block;
+        text-align: left;
+    }
+
+    .services-list .visual {
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        width: 100% !important;
+        height: 100% !important;
+        background: transparent !important;
+        border: none !important;
+        z-index: 1 !important;
+        opacity: 0.02 !important;
+        pointer-events: none;
+        display: flex !important;
+    }
+
+    .services-list .visual i {
+        font-size: 15rem !important;
+        color: var(--primary-lime) !important;
+    }
+
+    .architecture-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 3rem;
+    }
+
+    .architecture-grid .reveal-right {
+        order: -1;
+        /* Diagram first on mobile */
+    }
+
+    .arch-card {
+        padding: 1.5rem;
+    }
+
+    .arch-node {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+    }
+
+    .arch-text {
+        font-size: 0.85rem;
+    }
+
+    .phase-item {
+        text-align: left;
+        /* Keep phase text left-aligned for clarity */
+    }
+
+    .deep-dive h3 {
+        text-align: center;
+        width: 100%;
     }
 }
 
