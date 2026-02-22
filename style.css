@@ -177,7 +177,8 @@ body::before {
     color: var(--text-main);
 }
 
-.cta-btn {
+.cta-btn,
+.nav-links a.cta-btn {
     background: var(--primary-lime);
     color: #000;
     padding: 0.75rem 1.5rem;
@@ -559,7 +560,7 @@ footer {
 /* Mobile Improvements */
 @media (max-width: 768px) {
     section {
-        padding: 4rem 0;
+        padding: 3rem 0;
     }
 
     h1 {
@@ -571,66 +572,110 @@ footer {
         font-size: 2rem;
     }
 
+    h3 {
+        font-size: 1.2rem;
+    }
+
     .container {
-        padding: 0 1.5rem;
+        padding: 0 1rem;
+    }
+
+    /* === 2-Column Mobile Grid for ALL cards === */
+    .grid-3 {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.75rem !important;
+    }
+
+    .grid-2 {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.75rem !important;
+    }
+
+    /* Compact cards for 2-column layout */
+    .card {
+        padding: 1.2rem !important;
+        border-radius: 12px;
+    }
+
+    .card h3 {
+        font-size: 1rem;
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .card p {
+        font-size: 0.8rem;
+        margin-bottom: 0.5rem;
+        line-height: 1.4;
+    }
+
+    .card-icon {
+        font-size: 1.4rem;
+        margin-bottom: 0.75rem;
+    }
+
+    /* When odd number of cards: last card spans full width (both columns) */
+    .grid-3>*:last-child:nth-child(odd),
+    .grid-2>*:last-child:nth-child(odd) {
+        grid-column: span 2;
     }
 
     /* Products Page Mobile Fixes */
     .products-section .grid-2 {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.75rem;
     }
 
     .products-section .card {
-        padding: 2rem 1.5rem;
+        padding: 1.2rem !important;
     }
 
     .products-section .card h3 {
-        font-size: 1.3rem;
+        font-size: 1rem;
     }
 
     .products-section .card p {
-        font-size: 1rem;
+        font-size: 0.8rem;
     }
 
     /* Hospital Management Card Mobile Span Fix */
     .col-span-2 {
-        grid-column: span 1 !important;
+        grid-column: span 2 !important;
+    }
+
+    /* Product page card lists - compact */
+    .card ul {
+        font-size: 0.8rem;
+    }
+
+    .card ul li {
+        margin-bottom: 0.3rem;
     }
 
     .faq-item h4 {
-        font-size: 1.1rem;
+        font-size: 0.95rem;
     }
 
-    /* Services/Stack Page Mobile Fixes */
-    .services-list .grid-2 {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 3rem;
-    }
-
-    .service-item {
-        text-align: center;
-        order: 1 !important;
-        /* Forces text to always be after or before visual consistently */
+    .faq-answer p {
+        font-size: 0.85rem;
     }
 
     /* Services/Stack Page Mobile Fixes - Watermark Style */
     .services-grid {
-        gap: 2rem;
+        gap: 1.5rem;
     }
 
     .service-block {
         display: block !important;
         position: relative;
-        padding: 4rem 1.5rem;
+        padding: 2.5rem 1.2rem;
         border: 1px solid var(--border-color);
         border-radius: var(--radius-md);
         background: rgba(10, 10, 10, 0.5);
         overflow: hidden;
         direction: ltr !important;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
     }
 
     .service-item {
@@ -640,7 +685,7 @@ footer {
     }
 
     .service-item .step-num {
-        font-size: 5rem;
+        font-size: 4rem;
         margin-bottom: 0;
         position: absolute;
         top: -1rem;
@@ -648,13 +693,14 @@ footer {
     }
 
     .service-item h3 {
-        font-size: 1.8rem;
-        margin-top: 1rem;
+        font-size: 1.4rem;
+        margin-top: 0.75rem;
     }
 
     .service-features {
         display: inline-block;
         text-align: left;
+        font-size: 0.85rem;
     }
 
     .services-list .visual {
@@ -678,37 +724,491 @@ footer {
     }
 
     .architecture-grid {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 3rem;
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1rem;
     }
 
     .architecture-grid .reveal-right {
         order: -1;
-        /* Diagram first on mobile */
     }
 
     .arch-card {
-        padding: 1.5rem;
+        padding: 1rem;
     }
 
     .arch-node {
-        padding: 0.4rem 0.8rem;
-        font-size: 0.75rem;
+        padding: 0.3rem 0.6rem;
+        font-size: 0.7rem;
     }
 
     .arch-text {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
     }
 
     .phase-item {
         text-align: left;
-        /* Keep phase text left-aligned for clarity */
     }
 
     .deep-dive h3 {
         text-align: center;
         width: 100%;
+    }
+
+    /* Buttons - compact for mobile */
+    .btn-primary,
+    .btn-secondary {
+        padding: 0.75rem 1.2rem;
+        font-size: 0.85rem;
+    }
+
+    .btn-group {
+        gap: 0.5rem;
+    }
+
+    /* Footer - 2 column on mobile */
+    .footer-content {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+
+    .footer-brand {
+        grid-column: span 2;
+    }
+
+    .footer-links h4 {
+        font-size: 0.95rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .footer-links a {
+        font-size: 0.85rem;
+    }
+
+    .footer-links li {
+        margin-bottom: 0.5rem;
+    }
+
+    /* Inline-style grid overrides for product page cards */
+    [style*="display: grid"][style*="grid-template-columns"] {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    /* Process cards compact */
+    .process-card {
+        padding: 1.2rem !important;
+    }
+
+    /* === About / Manifesto Page Mobile Fixes === */
+
+    /* Hero: stack vertically, center text */
+    .hero .grid-2 {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 2rem !important;
+        text-align: center;
+    }
+
+    .hero .grid-2 h1 {
+        font-size: 2.2rem !important;
+    }
+
+    .hero .grid-2 p {
+        max-width: 100%;
+    }
+
+    /* Comparison table - compact for mobile */
+    .hero .grid-2>div:last-child {
+        padding: 1.2rem !important;
+        font-size: 0.85rem;
+    }
+
+    .hero .grid-2>div:last-child span {
+        font-size: 0.8rem;
+    }
+
+    /* Quote block - center on mobile */
+    .hero [style*="border-left"] {
+        text-align: left;
+    }
+
+    /* Values section: cards with code-style headings */
+    .values .card h3 {
+        font-size: 0.9rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .values .card p {
+        font-size: 0.75rem;
+        line-height: 1.4;
+    }
+
+    .values h2 {
+        margin-bottom: 2rem !important;
+    }
+
+    /* War on Inefficiency: stack vertically */
+    .inefficiency-war .grid-2 {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 2rem !important;
+        text-align: center;
+    }
+
+    .inefficiency-war .grid-2 h2 {
+        font-size: 2rem !important;
+    }
+
+    .inefficiency-war .grid-2 p {
+        text-align: left;
+        max-width: 100%;
+        font-size: 0.9rem !important;
+    }
+
+    .inefficiency-war .grid-2 .btn-primary {
+        display: inline-block;
+    }
+
+    /* Comparison card compact */
+    .inefficiency-war .reveal-right {
+        padding: 1.2rem !important;
+        font-size: 0.85rem;
+    }
+
+    /* Builders section: smaller avatars for 2-col layout */
+    .leadership .card [style*="width: 100px"] {
+        width: 60px !important;
+        height: 60px !important;
+        margin-bottom: 0.75rem !important;
+        font-size: 1.2rem !important;
+    }
+
+    .leadership .card h4 {
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .leadership .card p {
+        font-size: 0.75rem;
+    }
+
+    .leadership h2 {
+        margin-bottom: 2rem !important;
+        font-size: 1.8rem !important;
+    }
+
+    /* DNA section */
+    .hero+section+section+section p {
+        font-size: 1rem !important;
+    }
+
+    /* === Contact Page Mobile Fixes === */
+
+    /* Contact hero: stack vertically - info on top, form below */
+    .contact-info {
+        text-align: center;
+    }
+
+    .contact-info h1 {
+        font-size: 2.5rem !important;
+    }
+
+    .contact-info p {
+        max-width: 100%;
+        font-size: 0.95rem;
+    }
+
+    .contact-info a[href^="mailto"] {
+        font-size: 1.1rem !important;
+    }
+
+    .contact-info [style*="margin-top: 3rem"] {
+        margin-top: 1.5rem !important;
+    }
+
+    .contact-info [style*="margin-top: 4rem"] {
+        margin-top: 1.5rem !important;
+    }
+
+    .contact-info [style*="margin-bottom: 2rem"] {
+        margin-bottom: 1rem !important;
+    }
+
+    /* Location markers - inline on mobile */
+    .contact-info [style*="font-size: 0.9rem"] {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.25rem 1rem;
+    }
+
+    .contact-info [style*="font-size: 0.9rem"] p {
+        margin-bottom: 0.25rem;
+        font-size: 0.8rem;
+    }
+
+    /* Contact form - compact */
+    .hero form.card {
+        padding: 1.5rem !important;
+    }
+
+    .hero form.card h3 {
+        font-size: 1.1rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .hero form.card input,
+    .hero form.card select {
+        padding: 0.75rem !important;
+        font-size: 0.85rem;
+    }
+
+    .hero form.card label {
+        font-size: 0.8rem !important;
+        margin-bottom: 0.3rem !important;
+    }
+
+    .hero form.card [style*="margin-bottom: 1.5rem"] {
+        margin-bottom: 1rem !important;
+    }
+
+    /* Reduce hero padding on contact page */
+    .hero[style*="padding-top: 15rem"] {
+        padding-top: 8rem !important;
+        min-height: auto !important;
+    }
+
+    /* === Homepage Mobile Fixes === */
+
+    /* Hero SVG visual - hide or shrink on mobile */
+    .hero-visual {
+        display: none;
+    }
+
+    .hero-content {
+        text-align: center;
+    }
+
+    .hero-content p {
+        max-width: 100%;
+    }
+
+    .btn-group {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    /* Ticker - smaller gap and font */
+    .ticker-wrap .container {
+        gap: 1.5rem !important;
+        font-size: 0.7rem !important;
+    }
+
+    /* Section headings - tighter margins on mobile */
+    section h2[style*="margin-bottom: 4rem"],
+    section h2[style*="margin-bottom: 5rem"] {
+        margin-bottom: 2rem !important;
+    }
+
+    /* CTA Strip - stack vertically */
+    section>.container[style*="justify-content: space-between"] {
+        flex-direction: column !important;
+        text-align: center;
+        gap: 1rem !important;
+    }
+
+    section>.container[style*="justify-content: space-between"] h3 {
+        font-size: 1.4rem !important;
+    }
+
+    /* Results/Output section - shrink big stat numbers */
+    .results .card .highlight[style*="font-size: 3rem"] {
+        font-size: 2rem !important;
+    }
+
+    /* === Product Pages (Platform, Billing, Finance, Hospital, Workforce) === */
+
+    /* Feature sections - reduce extreme padding */
+    .features[style*="padding: 10rem"] {
+        padding: 4rem 0 !important;
+    }
+
+    .features h2[style*="margin-bottom: 5rem"] {
+        margin-bottom: 2rem !important;
+    }
+
+    /* CTA Demo sections - compact */
+    .cta-demo h2[style*="font-size: 3.5rem"] {
+        font-size: 2rem !important;
+    }
+
+    .cta-demo {
+        padding: 3rem 0 !important;
+    }
+
+    .cta-demo p[style*="font-size: 1.2rem"] {
+        font-size: 0.95rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+
+    .cta-demo .btn-primary,
+    .cta-demo .btn-secondary {
+        padding: 0.75rem 1.5rem !important;
+        font-size: 0.95rem !important;
+    }
+
+    /* Intro sections */
+    .intro p[style*="font-size: 1.3rem"] {
+        font-size: 1rem !important;
+    }
+
+    /* Dashboard mockup - already handled by existing rules */
+
+    /* Integration logos - wrap and smaller */
+    .integrations [style*="gap: 3rem"] {
+        gap: 1rem 1.5rem !important;
+    }
+
+    .integrations span[style*="font-size: 1.2rem"] {
+        font-size: 0.8rem !important;
+    }
+
+    /* Target Audience card inside platform */
+    .audience .card[style*="padding: 4rem"] {
+        padding: 1.5rem !important;
+    }
+
+    .audience .card h2 {
+        margin-bottom: 1.5rem !important;
+        font-size: 1.6rem !important;
+    }
+
+    .audience .grid-3 h4 {
+        font-size: 0.9rem;
+    }
+
+    .audience .grid-3 p {
+        font-size: 0.75rem;
+    }
+
+    /* Why LeadOS icons - smaller */
+    .why-leados i[style*="font-size: 2.5rem"] {
+        font-size: 1.5rem !important;
+        margin-bottom: 0.75rem !important;
+    }
+
+    /* Platform hero padding */
+    .hero[style*="padding-top: 10rem"] {
+        padding-top: 6rem !important;
+    }
+
+    /* === Careers Page Mobile Fixes === */
+
+    /* Job cards - stack vertically */
+    .job-card {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        padding: 1.2rem !important;
+        gap: 0.75rem !important;
+    }
+
+    .job-card h3 {
+        font-size: 1rem !important;
+    }
+
+    .job-card [style*="font-size: 0.9rem"] {
+        font-size: 0.75rem !important;
+        gap: 0.5rem !important;
+        flex-wrap: wrap;
+    }
+
+    .job-card .btn-secondary {
+        width: 100%;
+        text-align: center;
+        padding: 0.6rem 1rem !important;
+        font-size: 0.85rem !important;
+    }
+
+    /* Perks icons - consistent with card-icon size */
+    .perks .card i[style*="font-size: 2rem"] {
+        font-size: 1.4rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    /* === Apply Page Mobile Fixes === */
+
+    .contact[style*="padding-top: 8rem"] {
+        padding-top: 5rem !important;
+    }
+
+    .contact h1[style*="font-size: 3rem"] {
+        font-size: 2rem !important;
+    }
+
+    .contact-form-wrapper[style*="padding: 3rem"] {
+        padding: 1.5rem !important;
+    }
+
+    .contact-form-wrapper input,
+    .contact-form-wrapper select,
+    .contact-form-wrapper textarea {
+        padding: 0.75rem !important;
+        font-size: 0.85rem;
+    }
+
+    .contact-form-wrapper label {
+        font-size: 0.85rem !important;
+    }
+
+    .contact-form-wrapper .form-group[style*="margin-bottom: 1.5rem"] {
+        margin-bottom: 1rem !important;
+    }
+
+    /* === Privacy & Terms Page Mobile Fixes === */
+    .container[style*="max-width: 800px"],
+    .container[style*="max-width: 900px"] {
+        padding: 0 1rem;
+    }
+
+    /* === Global: Large inline font overrides for mobile === */
+    [style*="font-size: 1.5rem"]:not(h1):not(h2):not(h3):not(.highlight) {
+        font-size: 1.1rem !important;
+    }
+
+    /* Process step numbers - smaller */
+    .process-card [style*="font-size: 4rem"] {
+        font-size: 2.5rem !important;
+    }
+
+    /* Mockup dashboard sidebar */
+    .mockup-content[style*="grid-template-columns: 200px"] {
+        grid-template-columns: 1fr !important;
+    }
+
+    .mockup-content .sidebar {
+        display: none !important;
+    }
+
+    .mockup-content .stats-row {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+
+    .mockup-content .stats-row [style*="font-size: 2rem"] {
+        font-size: 1.2rem !important;
+    }
+
+    .mockup-content .stats-row [style*="font-size: 0.8rem"] {
+        font-size: 0.6rem !important;
+    }
+
+    .mockup-content .stats-row [style*="padding: 1.5rem"] {
+        padding: 0.75rem !important;
+    }
+
+    /* Chart container compact */
+    .chart-container[style*="height: 200px"] {
+        height: 120px !important;
     }
 }
 
@@ -723,7 +1223,8 @@ footer {
 
     .grid-2,
     .grid-3 {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
     }
 
     .navbar {
@@ -760,12 +1261,10 @@ footer {
         display: flex;
         flex-direction: column;
         align-items: center;
-        /* Center items */
         justify-content: center;
         gap: 2rem;
         position: fixed;
         top: 60px;
-        /* Below navbar */
         left: 0;
         width: 100%;
         height: calc(100vh - 60px);
@@ -778,7 +1277,6 @@ footer {
 
     .nav-links.mobile-menu.active a {
         font-size: 1.5rem;
-        /* Larger fonts for mobile */
         font-family: var(--font-heading);
     }
 
@@ -811,4 +1309,57 @@ footer {
     .col-span-2 {
         grid-column: span 2;
     }
+}
+
+/* FAQ Accordion Styles */
+.faq-item {
+    border-bottom: 1px solid #333;
+    padding: 1.5rem 0;
+}
+
+.faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.faq-question:hover {
+    color: var(--primary-lime);
+}
+
+.faq-question h4 {
+    margin-bottom: 0;
+    font-size: 1.1rem;
+}
+
+.faq-question i {
+    transition: transform 0.3s ease;
+    color: var(--primary-lime);
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.faq-answer p {
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-bottom: 0;
+}
+
+.faq-item.active .faq-answer {
+    max-height: 200px;
+}
+
+.faq-item.active .faq-question i {
+    transform: rotate(180deg);
+}
+
+.faq-item.active .faq-question {
+    color: var(--primary-lime);
 }

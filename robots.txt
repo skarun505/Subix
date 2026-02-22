@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://subix.io/sitemap.xml
+Sitemap: https://subix.in/sitemap.xml
