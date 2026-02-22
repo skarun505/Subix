@@ -1,26 +1,18 @@
+/* ── Base & Typography ─────────────────────────── */
 :root {
     --bg-color: #050505;
-    /* Ultra Dark */
     --surface-color: #111111;
     --surface-highlight: #1a1a1a;
     --border-color: #333333;
-
-    /* Acid & Neon Palette */
     --primary-lime: #ccff00;
-    /* Acid Lime */
     --primary-hover: #b3e600;
     --accent-purple: #9d4edd;
     --accent-pink: #ff007f;
     --accent-cyan: #00f3ff;
-
     --text-main: #ffffff;
     --text-muted: #888888;
-
-    /* Fonts */
     --font-heading: 'Space Grotesk', sans-serif;
-    /* Geometric, bold, modern */
     --font-body: 'Inter', sans-serif;
-
     --container-width: 1400px;
     --radius-sm: 8px;
     --radius-md: 16px;
@@ -35,6 +27,7 @@
 
 html {
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -44,9 +37,9 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-/* Typography */
 h1,
 h2,
 h3,
@@ -89,7 +82,6 @@ a {
     transition: 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-/* Utility */
 .container {
     max-width: var(--container-width);
     margin: 0 auto;
@@ -128,48 +120,56 @@ body::before {
     transform: translateX(-50%);
     width: 90%;
     max-width: var(--container-width);
-    background: rgba(17, 17, 17, 0.8);
-    backdrop-filter: blur(20px);
+    background: rgba(17, 17, 17, 0.85);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     border: 1px solid var(--border-color);
     border-radius: 100px;
-    padding: 1rem 2rem;
+    padding: 0.6rem 1.5rem;
     z-index: 100;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
+    gap: 1rem;
 }
 
 .logo {
     display: flex;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .logo img {
-    height: 56px;
+    height: 40px;
     width: auto;
     display: block;
 }
 
 .footer-brand .logo img {
-    height: 40px;
-    /* Slightly larger in footer */
+    height: 36px;
 }
 
+/* Desktop nav links — centered in the middle column */
 .nav-links {
     display: flex;
-    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+    gap: 1.75rem;
     list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .nav-links.mobile-menu {
     display: none;
-    /* Hide mobile menu by default on desktop */
 }
 
 .nav-links a {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 500;
     color: var(--text-muted);
+    white-space: nowrap;
+    padding: 0.25rem 0;
 }
 
 .nav-links a:hover,
@@ -177,28 +177,45 @@ body::before {
     color: var(--text-main);
 }
 
+/* CTA button — rightmost column */
 .cta-btn,
 .nav-links a.cta-btn {
     background: var(--primary-lime);
     color: #000;
-    padding: 0.75rem 1.5rem;
+    padding: 0.6rem 1.25rem;
     border-radius: 100px;
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 0.875rem;
     border: none;
     cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .cta-btn:hover {
     background: var(--primary-hover);
-    transform: scale(1.05);
+    transform: scale(1.04);
 }
 
-/* Mobile Menu */
+/* Mobile Menu toggle — hidden on desktop */
 .mobile-toggle {
     display: none;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     cursor: pointer;
+    padding: 0.4rem;
+    min-width: 40px;
+    min-height: 40px;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Right-side CTA wrapper */
+.nav-cta-slot {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-shrink: 0;
+    position: relative;
 }
 
 /* Layouts */
@@ -556,20 +573,36 @@ footer {
     font-size: 0.9rem;
 }
 
-/* Responsive */
-/* Mobile Improvements */
+/* ════════════════════════════════════════════════════
+   MOBILE RESPONSIVE — @media (max-width: 768px)
+   ════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
-    section {
-        padding: 3rem 0;
+
+    /* ── Touch interaction improvements ── */
+    a,
+    button {
+        -webkit-tap-highlight-color: transparent;
     }
 
+    button,
+    [role="button"] {
+        touch-action: manipulation;
+    }
+
+    /* ── Spacing ── */
+    section {
+        padding: 3.5rem 0;
+    }
+
+    /* ── Typography ── */
     h1 {
-        font-size: 2.8rem;
-        line-height: 1.1;
+        font-size: 2.6rem;
+        line-height: 1.12;
     }
 
     h2 {
-        font-size: 2rem;
+        font-size: 1.9rem;
+        line-height: 1.15;
     }
 
     h3 {
@@ -580,33 +613,43 @@ footer {
         padding: 0 1rem;
     }
 
-    /* === 2-Column Mobile Grid for ALL cards === */
+    p {
+        font-size: 0.95rem;
+        max-width: 100%;
+    }
+
+    /* ── Grids ── */
     .grid-3 {
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 0.75rem !important;
     }
 
     .grid-2 {
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 0.75rem !important;
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem !important;
     }
 
-    /* Compact cards for 2-column layout */
+    /* Last odd child spans full row */
+    .grid-3>*:last-child:nth-child(odd) {
+        grid-column: span 2;
+    }
+
+    /* ── Cards ── */
     .card {
-        padding: 1.2rem !important;
-        border-radius: 12px;
+        padding: 1.25rem !important;
+        border-radius: 14px;
     }
 
     .card h3 {
         font-size: 1rem;
         margin-top: 0.5rem;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.4rem;
     }
 
     .card p {
-        font-size: 0.8rem;
-        margin-bottom: 0.5rem;
-        line-height: 1.4;
+        font-size: 0.82rem;
+        margin-bottom: 0.4rem;
+        line-height: 1.45;
     }
 
     .card-icon {
@@ -614,13 +657,189 @@ footer {
         margin-bottom: 0.75rem;
     }
 
-    /* When odd number of cards: last card spans full width (both columns) */
-    .grid-3>*:last-child:nth-child(odd),
-    .grid-2>*:last-child:nth-child(odd) {
-        grid-column: span 2;
+    .card ul {
+        font-size: 0.82rem;
     }
 
-    /* Products Page Mobile Fixes */
+    .card ul li {
+        margin-bottom: 0.3rem;
+    }
+
+    .col-span-2 {
+        grid-column: span 2 !important;
+    }
+
+    /* ── Buttons ── */
+    .btn-primary,
+    .btn-secondary {
+        padding: 0.85rem 1.4rem;
+        font-size: 0.9rem;
+        min-height: 48px;
+        /* comfortable touch target */
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn-group {
+        gap: 0.6rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    /* ── Navbar ── */
+    .navbar {
+        top: 0;
+        left: 0;
+        transform: none;
+        width: 100%;
+        max-width: 100%;
+        border-radius: 0;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        padding: 0.75rem 1.25rem;
+        background: rgba(5, 5, 5, 0.97);
+        /* Mobile: toggle on left, logo on right */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row-reverse;
+        gap: 0.5rem;
+    }
+
+    /* Hide nav links and CTA slot on mobile */
+    .navbar .nav-links,
+    .navbar .nav-cta-slot {
+        display: none !important;
+    }
+
+    .mobile-toggle {
+        display: block;
+        color: white;
+        font-size: 1.2rem;
+        min-width: 44px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Full-screen mobile menu */
+    .nav-links.mobile-menu.active {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.75rem;
+        position: fixed;
+        top: 57px;
+        left: 0;
+        width: 100%;
+        height: calc(100dvh - 57px);
+        background: rgba(5, 5, 5, 0.98);
+        backdrop-filter: blur(20px);
+        padding: 2rem;
+        border-bottom: 1px solid var(--border-color);
+        z-index: 99;
+        overflow-y: auto;
+    }
+
+    .nav-links.mobile-menu.active a {
+        font-size: 1.5rem;
+        font-family: var(--font-heading);
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+    }
+
+    .nav-links.mobile-menu.active .cta-btn {
+        width: 100%;
+        text-align: center;
+        padding: 1rem;
+        min-height: 52px;
+    }
+
+    /* ── Hero ── */
+    .hero {
+        min-height: 100dvh;
+        padding-top: 5rem;
+        padding-bottom: 2rem;
+    }
+
+    .hero-visual {
+        display: none;
+    }
+
+    .hero-content {
+        text-align: center;
+        padding: 0;
+    }
+
+    .hero-content p {
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Hero two-column stacks vertically */
+    .hero .grid-2 {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 2rem !important;
+        text-align: center;
+    }
+
+    .hero .grid-2 h1 {
+        font-size: 2.2rem !important;
+    }
+
+    .hero .grid-2 p {
+        max-width: 100%;
+    }
+
+    .hero .grid-2>div:last-child {
+        padding: 1.2rem !important;
+        font-size: 0.85rem;
+    }
+
+    .hero .grid-2>div:last-child span {
+        font-size: 0.8rem;
+    }
+
+    .hero [style*="border-left"] {
+        text-align: left;
+    }
+
+    /* ── Ticker ── */
+    .ticker-wrap .container {
+        gap: 1.5rem !important;
+        font-size: 0.7rem !important;
+    }
+
+    /* ── Section headings ── */
+    section h2[style*="margin-bottom: 4rem"],
+    section h2[style*="margin-bottom: 5rem"] {
+        margin-bottom: 2rem !important;
+    }
+
+    /* ── CTA Strip ── */
+    section>.container[style*="justify-content: space-between"] {
+        flex-direction: column !important;
+        text-align: center;
+        gap: 1rem !important;
+    }
+
+    section>.container[style*="justify-content: space-between"] h3 {
+        font-size: 1.4rem !important;
+    }
+
+    /* ── Results stat numbers ── */
+    .results .card .highlight[style*="font-size: 3rem"] {
+        font-size: 2rem !important;
+    }
+
+    /* ── Products grid override ── */
     .products-section .grid-2 {
         display: grid;
         grid-template-columns: repeat(2, 1fr) !important;
@@ -639,20 +858,7 @@ footer {
         font-size: 0.8rem;
     }
 
-    /* Hospital Management Card Mobile Span Fix */
-    .col-span-2 {
-        grid-column: span 2 !important;
-    }
-
-    /* Product page card lists - compact */
-    .card ul {
-        font-size: 0.8rem;
-    }
-
-    .card ul li {
-        margin-bottom: 0.3rem;
-    }
-
+    /* ── FAQ ── */
     .faq-item h4 {
         font-size: 0.95rem;
     }
@@ -661,7 +867,7 @@ footer {
         font-size: 0.85rem;
     }
 
-    /* Services/Stack Page Mobile Fixes - Watermark Style */
+    /* ── Services ── */
     .services-grid {
         gap: 1.5rem;
     }
@@ -723,14 +929,10 @@ footer {
         color: var(--primary-lime) !important;
     }
 
+    /* ── Architecture Grid ── */
     .architecture-grid {
-        display: grid !important;
-        grid-template-columns: repeat(2, 1fr) !important;
+        grid-template-columns: 1fr !important;
         gap: 1rem;
-    }
-
-    .architecture-grid .reveal-right {
-        order: -1;
     }
 
     .arch-card {
@@ -755,85 +957,7 @@ footer {
         width: 100%;
     }
 
-    /* Buttons - compact for mobile */
-    .btn-primary,
-    .btn-secondary {
-        padding: 0.75rem 1.2rem;
-        font-size: 0.85rem;
-    }
-
-    .btn-group {
-        gap: 0.5rem;
-    }
-
-    /* Footer - 2 column on mobile */
-    .footer-content {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr;
-        gap: 1.5rem;
-    }
-
-    .footer-brand {
-        grid-column: span 2;
-    }
-
-    .footer-links h4 {
-        font-size: 0.95rem;
-        margin-bottom: 0.75rem;
-    }
-
-    .footer-links a {
-        font-size: 0.85rem;
-    }
-
-    .footer-links li {
-        margin-bottom: 0.5rem;
-    }
-
-    /* Inline-style grid overrides for product page cards */
-    [style*="display: grid"][style*="grid-template-columns"] {
-        grid-template-columns: repeat(2, 1fr) !important;
-    }
-
-    /* Process cards compact */
-    .process-card {
-        padding: 1.2rem !important;
-    }
-
-    /* === About / Manifesto Page Mobile Fixes === */
-
-    /* Hero: stack vertically, center text */
-    .hero .grid-2 {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 2rem !important;
-        text-align: center;
-    }
-
-    .hero .grid-2 h1 {
-        font-size: 2.2rem !important;
-    }
-
-    .hero .grid-2 p {
-        max-width: 100%;
-    }
-
-    /* Comparison table - compact for mobile */
-    .hero .grid-2>div:last-child {
-        padding: 1.2rem !important;
-        font-size: 0.85rem;
-    }
-
-    .hero .grid-2>div:last-child span {
-        font-size: 0.8rem;
-    }
-
-    /* Quote block - center on mobile */
-    .hero [style*="border-left"] {
-        text-align: left;
-    }
-
-    /* Values section: cards with code-style headings */
+    /* ── About Page ── */
     .values .card h3 {
         font-size: 0.9rem !important;
         margin-bottom: 0.5rem !important;
@@ -848,7 +972,6 @@ footer {
         margin-bottom: 2rem !important;
     }
 
-    /* War on Inefficiency: stack vertically */
     .inefficiency-war .grid-2 {
         display: flex !important;
         flex-direction: column !important;
@@ -870,13 +993,11 @@ footer {
         display: inline-block;
     }
 
-    /* Comparison card compact */
     .inefficiency-war .reveal-right {
         padding: 1.2rem !important;
         font-size: 0.85rem;
     }
 
-    /* Builders section: smaller avatars for 2-col layout */
     .leadership .card [style*="width: 100px"] {
         width: 60px !important;
         height: 60px !important;
@@ -898,14 +1019,7 @@ footer {
         font-size: 1.8rem !important;
     }
 
-    /* DNA section */
-    .hero+section+section+section p {
-        font-size: 1rem !important;
-    }
-
-    /* === Contact Page Mobile Fixes === */
-
-    /* Contact hero: stack vertically - info on top, form below */
+    /* ── Contact Page ── */
     .contact-info {
         text-align: center;
     }
@@ -935,7 +1049,6 @@ footer {
         margin-bottom: 1rem !important;
     }
 
-    /* Location markers - inline on mobile */
     .contact-info [style*="font-size: 0.9rem"] {
         display: flex;
         flex-wrap: wrap;
@@ -948,7 +1061,6 @@ footer {
         font-size: 0.8rem;
     }
 
-    /* Contact form - compact */
     .hero form.card {
         padding: 1.5rem !important;
     }
@@ -961,11 +1073,11 @@ footer {
     .hero form.card input,
     .hero form.card select {
         padding: 0.75rem !important;
-        font-size: 0.85rem;
+        font-size: 0.9rem;
     }
 
     .hero form.card label {
-        font-size: 0.8rem !important;
+        font-size: 0.85rem !important;
         margin-bottom: 0.3rem !important;
     }
 
@@ -973,139 +1085,17 @@ footer {
         margin-bottom: 1rem !important;
     }
 
-    /* Reduce hero padding on contact page */
     .hero[style*="padding-top: 15rem"] {
-        padding-top: 8rem !important;
+        padding-top: 6rem !important;
         min-height: auto !important;
     }
 
-    /* === Homepage Mobile Fixes === */
-
-    /* Hero SVG visual - hide or shrink on mobile */
-    .hero-visual {
-        display: none;
-    }
-
-    .hero-content {
-        text-align: center;
-    }
-
-    .hero-content p {
-        max-width: 100%;
-    }
-
-    .btn-group {
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    /* Ticker - smaller gap and font */
-    .ticker-wrap .container {
-        gap: 1.5rem !important;
-        font-size: 0.7rem !important;
-    }
-
-    /* Section headings - tighter margins on mobile */
-    section h2[style*="margin-bottom: 4rem"],
-    section h2[style*="margin-bottom: 5rem"] {
-        margin-bottom: 2rem !important;
-    }
-
-    /* CTA Strip - stack vertically */
-    section>.container[style*="justify-content: space-between"] {
-        flex-direction: column !important;
-        text-align: center;
-        gap: 1rem !important;
-    }
-
-    section>.container[style*="justify-content: space-between"] h3 {
-        font-size: 1.4rem !important;
-    }
-
-    /* Results/Output section - shrink big stat numbers */
-    .results .card .highlight[style*="font-size: 3rem"] {
-        font-size: 2rem !important;
-    }
-
-    /* === Product Pages (Platform, Billing, Finance, Hospital, Workforce) === */
-
-    /* Feature sections - reduce extreme padding */
-    .features[style*="padding: 10rem"] {
-        padding: 4rem 0 !important;
-    }
-
-    .features h2[style*="margin-bottom: 5rem"] {
-        margin-bottom: 2rem !important;
-    }
-
-    /* CTA Demo sections - compact */
-    .cta-demo h2[style*="font-size: 3.5rem"] {
-        font-size: 2rem !important;
-    }
-
-    .cta-demo {
-        padding: 3rem 0 !important;
-    }
-
-    .cta-demo p[style*="font-size: 1.2rem"] {
-        font-size: 0.95rem !important;
-        margin-bottom: 1.5rem !important;
-    }
-
-    .cta-demo .btn-primary,
-    .cta-demo .btn-secondary {
-        padding: 0.75rem 1.5rem !important;
-        font-size: 0.95rem !important;
-    }
-
-    /* Intro sections */
-    .intro p[style*="font-size: 1.3rem"] {
-        font-size: 1rem !important;
-    }
-
-    /* Dashboard mockup - already handled by existing rules */
-
-    /* Integration logos - wrap and smaller */
-    .integrations [style*="gap: 3rem"] {
-        gap: 1rem 1.5rem !important;
-    }
-
-    .integrations span[style*="font-size: 1.2rem"] {
-        font-size: 0.8rem !important;
-    }
-
-    /* Target Audience card inside platform */
-    .audience .card[style*="padding: 4rem"] {
-        padding: 1.5rem !important;
-    }
-
-    .audience .card h2 {
-        margin-bottom: 1.5rem !important;
-        font-size: 1.6rem !important;
-    }
-
-    .audience .grid-3 h4 {
-        font-size: 0.9rem;
-    }
-
-    .audience .grid-3 p {
-        font-size: 0.75rem;
-    }
-
-    /* Why LeadOS icons - smaller */
-    .why-leados i[style*="font-size: 2.5rem"] {
-        font-size: 1.5rem !important;
-        margin-bottom: 0.75rem !important;
-    }
-
-    /* Platform hero padding */
+    /* ── Platform hero ── */
     .hero[style*="padding-top: 10rem"] {
         padding-top: 6rem !important;
     }
 
-    /* === Careers Page Mobile Fixes === */
-
-    /* Job cards - stack vertically */
+    /* ── Careers ── */
     .job-card {
         flex-direction: column !important;
         align-items: flex-start !important;
@@ -1118,26 +1108,24 @@ footer {
     }
 
     .job-card [style*="font-size: 0.9rem"] {
-        font-size: 0.75rem !important;
-        gap: 0.5rem !important;
+        font-size: 0.8rem !important;
         flex-wrap: wrap;
+        gap: 0.5rem !important;
     }
 
     .job-card .btn-secondary {
         width: 100%;
         text-align: center;
-        padding: 0.6rem 1rem !important;
+        padding: 0.7rem 1rem !important;
         font-size: 0.85rem !important;
+        min-height: 44px;
     }
 
-    /* Perks icons - consistent with card-icon size */
     .perks .card i[style*="font-size: 2rem"] {
         font-size: 1.4rem !important;
-        margin-bottom: 0.5rem !important;
     }
 
-    /* === Apply Page Mobile Fixes === */
-
+    /* ── Apply Page ── */
     .contact[style*="padding-top: 8rem"] {
         padding-top: 5rem !important;
     }
@@ -1153,8 +1141,9 @@ footer {
     .contact-form-wrapper input,
     .contact-form-wrapper select,
     .contact-form-wrapper textarea {
-        padding: 0.75rem !important;
-        font-size: 0.85rem;
+        padding: 0.85rem !important;
+        font-size: 0.9rem;
+        min-height: 48px;
     }
 
     .contact-form-wrapper label {
@@ -1165,25 +1154,126 @@ footer {
         margin-bottom: 1rem !important;
     }
 
-    /* === Privacy & Terms Page Mobile Fixes === */
+    /* ── Privacy & Terms ── */
     .container[style*="max-width: 800px"],
     .container[style*="max-width: 900px"] {
         padding: 0 1rem;
     }
 
-    /* === Global: Large inline font overrides for mobile === */
-    [style*="font-size: 1.5rem"]:not(h1):not(h2):not(h3):not(.highlight) {
-        font-size: 1.1rem !important;
+    /* ── Product Pages (Platform, Billing, Finance, etc.) ── */
+    .features[style*="padding: 10rem"] {
+        padding: 4rem 0 !important;
     }
 
-    /* Process step numbers - smaller */
+    .features h2[style*="margin-bottom: 5rem"] {
+        margin-bottom: 2rem !important;
+    }
+
+    .cta-demo h2[style*="font-size: 3.5rem"] {
+        font-size: 2rem !important;
+    }
+
+    .cta-demo {
+        padding: 3rem 0 !important;
+    }
+
+    .cta-demo p[style*="font-size: 1.2rem"] {
+        font-size: 0.95rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+
+    .cta-demo .btn-primary,
+    .cta-demo .btn-secondary {
+        padding: 0.8rem 1.5rem !important;
+        font-size: 0.95rem !important;
+    }
+
+    .intro p[style*="font-size: 1.3rem"] {
+        font-size: 1rem !important;
+    }
+
+    .integrations [style*="gap: 3rem"] {
+        gap: 1rem 1.5rem !important;
+    }
+
+    .integrations span[style*="font-size: 1.2rem"] {
+        font-size: 0.85rem !important;
+    }
+
+    .audience .card[style*="padding: 4rem"] {
+        padding: 1.5rem !important;
+    }
+
+    .audience .card h2 {
+        margin-bottom: 1.5rem !important;
+        font-size: 1.6rem !important;
+    }
+
+    .audience .grid-3 h4 {
+        font-size: 0.9rem;
+    }
+
+    .audience .grid-3 p {
+        font-size: 0.78rem;
+    }
+
+    .why-leados i[style*="font-size: 2.5rem"] {
+        font-size: 1.5rem !important;
+        margin-bottom: 0.75rem !important;
+    }
+
+    /* ── Process / step cards ── */
+    .process-card {
+        padding: 1.2rem !important;
+    }
+
     .process-card [style*="font-size: 4rem"] {
         font-size: 2.5rem !important;
     }
 
-    /* Mockup dashboard sidebar */
-    .mockup-content[style*="grid-template-columns: 200px"] {
+    /* ── Inline grid override ── */
+    [style*="display: grid"][style*="grid-template-columns"] {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    /* ── Global font size overrides ── */
+    [style*="font-size: 1.5rem"]:not(h1):not(h2):not(h3):not(.highlight) {
+        font-size: 1.1rem !important;
+    }
+
+    /* ── Footer ── */
+    footer {
+        padding: 3rem 0;
+    }
+
+    .footer-content {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+
+    .footer-brand {
+        grid-column: span 2;
+    }
+
+    .footer-links h4 {
+        font-size: 0.95rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .footer-links a {
+        font-size: 0.85rem;
+    }
+
+    .footer-links li {
+        margin-bottom: 0.5rem;
+    }
+
+    /* ── Dashboard Mockup ── */
+    .mockup-content {
         grid-template-columns: 1fr !important;
+        padding: 1rem !important;
+        background: #000 !important;
     }
 
     .mockup-content .sidebar {
@@ -1191,7 +1281,7 @@ footer {
     }
 
     .mockup-content .stats-row {
-        grid-template-columns: repeat(3, 1fr) !important;
+        grid-template-columns: 1fr !important;
     }
 
     .mockup-content .stats-row [style*="font-size: 2rem"] {
@@ -1199,18 +1289,39 @@ footer {
     }
 
     .mockup-content .stats-row [style*="font-size: 0.8rem"] {
-        font-size: 0.6rem !important;
+        font-size: 0.65rem !important;
     }
 
     .mockup-content .stats-row [style*="padding: 1.5rem"] {
         padding: 0.75rem !important;
     }
 
-    /* Chart container compact */
     .chart-container[style*="height: 200px"] {
         height: 120px !important;
     }
+
+    /* ── Profile Dropdown (script.js injected) ── */
+    .profile-dropdown {
+        right: 0 !important;
+        left: auto !important;
+        width: calc(100vw - 2rem) !important;
+        max-width: 320px;
+    }
+
+    /* ── Edit Profile Modal ── */
+    .edit-modal-card {
+        width: calc(100vw - 2rem) !important;
+        max-width: 400px;
+        padding: 1.5rem !important;
+    }
+
+    .edit-modal-card input {
+        min-height: 48px;
+        font-size: 0.95rem;
+    }
 }
+
+
 
 @media (max-width: 960px) {
     h1 {

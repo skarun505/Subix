@@ -17,9 +17,24 @@ const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 const signupForm = document.getElementById("signup-form");
 const nameInput = document.getElementById("name-input");
 const emailInput = document.getElementById("email-input");
+const phoneInput = document.getElementById("phone-input");
+const countryCodeSelect = document.getElementById("country-code");
 const passwordInput = document.getElementById("password-input");
 const confirmInput = document.getElementById("confirm-input");
 const termsCheck = document.getElementById("terms-check");
+
+const modeEmailBtn = document.getElementById("mode-email");
+const modePhoneBtn = document.getElementById("mode-phone");
+const emailGroup = document.getElementById("email-group");
+const phoneGroup = document.getElementById("phone-group");
+const passwordGroup = document.getElementById("password-group");
+const confirmPasswordGroup = document.getElementById("confirm-password-group");
+const otpGroup = document.getElementById("otp-group");
+const otpInput = document.getElementById("otp-input");
+let authMode = "email";
+let otpSent = false;
+const signupBtnText = document.querySelector("#signup-btn .btn-text");
+
 const signupBtn = document.getElementById("signup-btn");
 const googleBtn = document.getElementById("google-btn");
 const eyeToggle = document.getElementById("eye-toggle");
@@ -154,6 +169,107 @@ eyeToggle.addEventListener("click", () => {
     eyeToggle.setAttribute("aria-label", isPw ? "Hide password" : "Show password");
 });
 
+// ── Authentication Mode Toggle & Country Codes ────────────────
+modeEmailBtn.addEventListener("click", () => {
+    if (otpSent) {
+        if (!confirm("Cancel mobile sign up and switch to email?")) return;
+        resetPhoneUI();
+    }
+    authMode = "email";
+    modeEmailBtn.style.background = "#222";
+    modeEmailBtn.style.color = "#fff";
+    modePhoneBtn.style.background = "transparent";
+    modePhoneBtn.style.color = "#888";
+    emailGroup.style.display = "block";
+    passwordGroup.style.display = "block";
+    confirmPasswordGroup.style.display = "block";
+    phoneGroup.style.display = "none";
+    otpGroup.style.display = "none";
+    signupBtnText.textContent = "Create Account";
+});
+
+function resetPhoneUI() {
+    otpSent = false;
+    phoneInput.disabled = false;
+    countryCodeSelect.disabled = false;
+    otpGroup.style.display = "none";
+    otpInput.value = "";
+    signupBtnText.textContent = "Create Account";
+}
+
+const comingSoonModal = document.getElementById("coming-soon-modal");
+const comingSoonClose = document.getElementById("coming-soon-close");
+const comingSoonOk = document.getElementById("coming-soon-ok");
+const comingSoonCard = document.getElementById("coming-soon-card");
+
+function openComingSoon() {
+    comingSoonModal.setAttribute("aria-hidden", "false");
+    comingSoonModal.style.pointerEvents = "auto";
+    requestAnimationFrame(() => {
+        comingSoonModal.style.opacity = "1";
+        comingSoonCard.style.transform = "translateY(0)";
+    });
+}
+
+function closeComingSoon() {
+    comingSoonModal.style.opacity = "0";
+    comingSoonCard.style.transform = "translateY(20px)";
+    comingSoonModal.style.pointerEvents = "none";
+    setTimeout(() => {
+        comingSoonModal.setAttribute("aria-hidden", "true");
+    }, 300);
+}
+
+comingSoonClose.addEventListener("click", closeComingSoon);
+comingSoonOk.addEventListener("click", closeComingSoon);
+comingSoonModal.addEventListener("click", (e) => {
+    if (e.target === comingSoonModal) closeComingSoon();
+});
+
+modePhoneBtn.addEventListener("click", () => {
+    openComingSoon();
+    return;
+
+    authMode = "phone";
+    modePhoneBtn.style.background = "#222";
+    modePhoneBtn.style.color = "#fff";
+    modeEmailBtn.style.background = "transparent";
+    modeEmailBtn.style.color = "#888";
+    phoneGroup.style.display = "block";
+    emailGroup.style.display = "none";
+    passwordGroup.style.display = "none";
+    confirmPasswordGroup.style.display = "none";
+    signupBtnText.textContent = otpSent ? "Verify & Create Account" : "Send Account OTP";
+    if (otpSent) otpGroup.style.display = "block";
+});
+
+// Fetch all country codes dynamically
+fetch("https://restcountries.com/v3.1/all?fields=idd,cca2,flag")
+    .then(res => res.json())
+    .then(data => {
+        const codes = [];
+        data.forEach(c => {
+            if (c.idd && c.idd.root) {
+                const root = c.idd.root;
+                const suffixes = c.idd.suffixes ? c.idd.suffixes : [""];
+                suffixes.forEach(s => {
+                    codes.push({ dialCode: root + s, code: c.cca2, flag: c.flag });
+                });
+            }
+        });
+        codes.sort((a, b) => a.dialCode.localeCompare(b.dialCode));
+
+        let html = '<option value="+1">🇺🇸 +1 (USA)</option><option value="+44">🇬🇧 +44 (UK)</option><option value="+91">🇮🇳 +91 (IND)</option><option disabled>──────</option>';
+        codes.forEach(c => {
+            html += `<option value="${c.dialCode}">${c.flag} ${c.dialCode} (${c.code})</option>`;
+        });
+        if (countryCodeSelect) {
+            countryCodeSelect.innerHTML = html;
+            countryCodeSelect.value = '+91';
+        }
+    })
+    .catch(e => console.log("Failed to load country codes.", e));
+
 // ── Show Verification Screen ────────────────────────────
 function showVerifyScreen(email) {
     verifyEmailDisplay.textContent = email;
@@ -196,36 +312,12 @@ signupForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const name = nameInput.value.trim();
-    const email = emailInput.value.trim();
-    const password = passwordInput.value;
-    const confirm = confirmInput.value;
     const agreed = termsCheck.checked;
 
-    // ── Validation ──────────────────────────────────────
     let valid = true;
 
     if (!name || name.length < 2) {
         markInvalid(nameInput);
-        valid = false;
-    }
-
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        markInvalid(emailInput);
-        valid = false;
-    }
-
-    const strength = getPasswordStrength(password);
-    if (!password || password.length < 8) {
-        markInvalid(passwordInput);
-        valid = false;
-    } else if (strength.cls === "weak") {
-        markInvalid(passwordInput);
-        showError("Password is too weak. Add uppercase letters, numbers, or symbols.");
-        return;
-    }
-
-    if (password !== confirm) {
-        markInvalid(confirmInput);
         valid = false;
     }
 
@@ -234,48 +326,136 @@ signupForm.addEventListener("submit", async (e) => {
         return;
     }
 
+    let phoneStr = "";
+    if (authMode === "email") {
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+        const confirm = confirmInput.value;
+
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            markInvalid(emailInput);
+            valid = false;
+        }
+
+        const strength = getPasswordStrength(password);
+        if (!password || password.length < 8) {
+            markInvalid(passwordInput);
+            valid = false;
+        } else if (strength.cls === "weak") {
+            markInvalid(passwordInput);
+            showError("Password is too weak. Add uppercase letters, numbers, or symbols.");
+            return;
+        }
+
+        if (password !== confirm) {
+            markInvalid(confirmInput);
+            valid = false;
+        }
+    } else {
+        const phone = phoneInput.value.trim();
+        if (!phone || phone.length < 7) {
+            markInvalid(phoneInput);
+            valid = false;
+        }
+        phoneStr = countryCodeSelect.value + phone;
+
+        if (otpSent) {
+            if (!otpInput.value || otpInput.value.length < 6) {
+                markInvalid(otpInput);
+                valid = false;
+            }
+        }
+    }
+
     if (!valid) {
         showError("Please fill in all fields correctly.");
         return;
     }
 
     setLoading(signupBtn, true);
-    lastEmail = email;
 
     try {
-        const { data, error } = await sb.auth.signUp({
-            email,
-            password,
-            options: {
-                data: {
-                    full_name: name,
-                    display_name: name.split(" ")[0],
+        if (authMode === "email") {
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            lastEmail = email;
+
+            const { data, error } = await sb.auth.signUp({
+                email,
+                password,
+                options: {
+                    data: {
+                        full_name: name,
+                        display_name: name.split(" ")[0],
+                    },
+                    emailRedirectTo: "https://subix.in/login",
                 },
-                emailRedirectTo: "https://subix.in/login",
-            },
-        });
+            });
 
-        if (error) {
-            // Friendly messages
-            const msg = error.message.includes("already registered")
-                ? "This email is already registered. Try signing in instead."
-                : error.message.includes("Password should")
-                    ? "Password must be at least 8 characters."
-                    : error.message;
+            if (error) {
+                const msg = error.message.includes("already registered")
+                    ? "This email is already registered. Try signing in instead."
+                    : error.message.includes("Password should")
+                        ? "Password must be at least 8 characters."
+                        : error.message;
 
-            showError(msg);
-        } else if (data.user) {
-            // Check if email confirmation is required
-            if (data.user.identities && data.user.identities.length === 0) {
-                // Already registered but unconfirmed
-                showError("This email is already registered. Please check your inbox for a confirmation link.");
-            } else if (!data.session) {
-                // Email confirmation required — show verify screen
-                showVerifyScreen(email);
+                showError(msg);
+            } else if (data.user) {
+                if (data.user.identities && data.user.identities.length === 0) {
+                    showError("This email is already registered. Please check your inbox for a confirmation link.");
+                } else if (!data.session) {
+                    showVerifyScreen(email);
+                } else {
+                    showSuccess("Account created! Redirecting…");
+                    setTimeout(() => window.location.replace("/"), 1000);
+                }
+            }
+        } else {
+            // PHONE MODE
+            if (!otpSent) {
+                // Send OTP out
+                const { error } = await sb.auth.signInWithOtp({
+                    phone: phoneStr,
+                    options: {
+                        data: {
+                            full_name: name,
+                            display_name: name.split(" ")[0],
+                        }
+                    }
+                });
+
+                if (error) {
+                    if (error.message.includes("rate limit")) {
+                        showError("Too many SMS requests. Please try again later.");
+                    } else {
+                        showError("Failed to send OTP to mobile: " + error.message);
+                    }
+                } else {
+                    otpSent = true;
+                    showSuccess("OTP sent to your mobile number.");
+
+                    phoneInput.disabled = true;
+                    countryCodeSelect.disabled = true;
+                    nameInput.disabled = true;
+                    otpGroup.style.display = "block";
+                    signupBtnText.textContent = "Verify & Create Account";
+                    setTimeout(() => otpInput.focus(), 100);
+                }
             } else {
-                // Email confirmation disabled — directly logged in
-                showSuccess("Account created! Redirecting…");
-                setTimeout(() => window.location.replace("/"), 1000);
+                // Verify OTP
+                const { data, error } = await sb.auth.verifyOtp({
+                    phone: phoneStr,
+                    token: otpInput.value.trim(),
+                    type: 'sms'
+                });
+
+                if (error) {
+                    showError("Invalid or expired OTP. Please try again.");
+                    markInvalid(otpInput);
+                } else if (data.user) {
+                    showSuccess("Account verified and created! Redirecting…");
+                    setTimeout(() => window.location.replace("/"), 1000);
+                }
             }
         }
     } catch (err) {

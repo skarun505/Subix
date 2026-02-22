@@ -7,23 +7,23 @@
     <title>LeadOS: Automated Lead Management Platform - Subix</title>
     <meta name="description"
         content="Subix LeadOS: The centralized lead management command center. Automated tracking, funnel visualization, and conversion optimization in one platform.">
-    <link rel="canonical" href="https://subix.io/platform">
+    <link rel="canonical" href="https://subix.in/platform">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="product">
-    <meta property="og:url" content="https://subix.io/platform">
+    <meta property="og:url" content="https://subix.in/platform">
     <meta property="og:title" content="LeadOS: Automated Lead Management Platform - Subix">
     <meta property="og:description"
         content="Subix LeadOS: The centralized lead management command center. Automated tracking, funnel visualization, and conversion optimization in one platform.">
-    <meta property="og:image" content="https://subix.io/assets/social-preview.png">
+    <meta property="og:image" content="https://subix.in/assets/social-preview.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://subix.io/platform">
+    <meta property="twitter:url" content="https://subix.in/platform">
     <meta property="twitter:title" content="LeadOS: Automated Lead Management Platform - Subix">
     <meta property="twitter:description"
         content="Subix LeadOS: The centralized lead management command center. Automated tracking, funnel visualization, and conversion optimization in one platform.">
-    <meta property="twitter:image" content="https://subix.io/assets/social-preview.png">
+    <meta property="twitter:image" content="https://subix.in/assets/social-preview.png">
 
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
@@ -59,20 +59,24 @@
         <a href="/" class="logo">
             <img src="Subix PNG.png" alt="Subix Logo">
         </a>
-        <div class="mobile-toggle"><i class="fas fa-bars"></i></div>
+        
         <ul class="nav-links">
             <li><a href="products">Products</a></li>
             <li><a href="services">The Stack</a></li>
             <li><a href="platform" class="active">LeadOS</a></li>
             <li><a href="about">Manifesto</a></li>
             <li><a href="careers">Join Us</a></li>
-            <li><a href="contact" class="cta-btn">Start Building</a></li>
         </ul>
+        <!-- Right slot: Sign In CTA (replaced by profile widget when logged in) -->
+        <div class="nav-cta-slot">
+            <a href="login" class="cta-btn">Sign In</a>
+        </div>
+        <div class="mobile-toggle"><i class="fas fa-bars"></i></div>
     </nav>
     <div class="nav-links mobile-menu" id="mobileMenu"></div>
 
     <!-- Hero -->
-    <header class="hero" style="min-height: 80vh; padding-bottom: 2rem;">
+    <header class="hero" style="min-height: 80vh; padding-bottom: 2rem; padding-top: 10rem;">
         <div class="container" style="text-align: center;">
             <div class="hero-tag"><span>●</span> LEAD-TO-REVENUE OS</div>
             <h1>Subix <span class="highlight">LeadOS</span></h1>
@@ -92,7 +96,7 @@
                     <div style="width: 12px; height: 12px; background: #fe5f57; border-radius: 50%;"></div>
                     <div style="width: 12px; height: 12px; background: #febc2e; border-radius: 50%;"></div>
                     <div style="width: 12px; height: 12px; background: #28c840; border-radius: 50%;"></div>
-                    <span style="font-size: 0.7rem; color: #444; margin-left: auto;">leados.subix.io</span>
+                    <span style="font-size: 0.7rem; color: #444; margin-left: auto;">leados.subix.in</span>
                 </div>
                 <!-- Simplified Mockup View -->
                 <div class="mockup-content"
@@ -303,6 +307,30 @@
         </div>
     </section>
 
+    <!-- Demo CTA / "Steal the System" -->
+    <section class="cta-demo"
+        style="padding: 6rem 0; background: var(--surface-color); border-top: 1px solid var(--primary-lime);">
+        <div class="container" style="text-align: center;">
+            <h2 style="font-size: 3.5rem; margin-bottom: 2rem;">Ready to <span class="highlight">Dominate?</span></h2>
+            <p style="font-size: 1.2rem; color: #ccc; max-width: 600px; margin: 0 auto 3rem;">
+                Stop playing small. Deploy LeadOS today and watch your conversion rates explode.
+            </p>
+            <div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
+                <a href="contact" class="btn-primary" style="padding: 1rem 3rem; font-size: 1.2rem;">Get the Sauce
+                    &rarr;</a>
+                <a href="#demo" class="btn-secondary"
+                    style="padding: 1rem 3rem; font-size: 1.2rem; border-color: #444;">Watch Demo</a>
+            </div>
+            <p
+                style="margin-top: 2rem; font-size: 0.9rem; color: #666; text-align: center; width: 100%; display: block; max-width: 100%;">
+                * No credit card. Just pure ROI.</p>
+            <p style="margin-top: 2rem; font-size: 0.8rem; color: #444; text-align: center;">
+                Subject to our <a href="terms" style="text-decoration: underline;">Terms</a> & <a href="privacy"
+                    style="text-decoration: underline;">Privacy Policy</a>.
+            </p>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer>
         <div class="container footer-content">
@@ -325,11 +353,18 @@
                 </ul>
             </div>
             <div class="footer-links">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="privacy">Privacy Policy</a></li>
+                    <li><a href="terms">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
                 <h4>Connect</h4>
                 <ul>
                     <li><a href="https://twitter.com" target="_blank">Twitter / X</a></li>
-                    <li><a href="https://linkedin.com" target="_blank">LinkedIn</a></li>
-                    <li><a href="mailto:contact@subix.io">contact@subix.io</a></li>
+                    <li><a href="https://www.linkedin.com/company/subix/about/" target="_blank">LinkedIn</a></li>
+                    <li><a href="mailto:contact@subix.in">contact@subix.in</a></li>
                 </ul>
             </div>
         </div>

@@ -23,7 +23,19 @@ const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 // ── DOM refs ───────────────────────────────────────────
 const loginForm = document.getElementById("login-form");
 const emailInput = document.getElementById("email-input");
+const phoneInput = document.getElementById("phone-input");
+const countryCodeSelect = document.getElementById("country-code");
+const emailGroup = document.getElementById("email-group");
+const phoneGroup = document.getElementById("phone-group");
+const modeEmailBtn = document.getElementById("mode-email");
+const modePhoneBtn = document.getElementById("mode-phone");
+let authMode = "email"; // 'email' or 'phone'
+let otpSent = false;
 const passwordInput = document.getElementById("password-input");
+const passwordGroup = document.getElementById("password-group");
+const otpGroup = document.getElementById("otp-group");
+const otpInput = document.getElementById("otp-input");
+const signinBtnText = document.getElementById("signin-btn-text");
 const signinBtn = document.getElementById("signin-btn");
 const googleBtn = document.getElementById("google-btn");
 const eyeToggle = document.getElementById("eye-toggle");
@@ -132,43 +144,93 @@ sb.auth.onAuthStateChange((event, session) => {
 loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const email = emailInput.value.trim();
-    const password = passwordInput.value;
+    let identifier = "";
+    if (authMode === "email") {
+        const email = emailInput.value.trim();
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            markInvalid(emailInput);
+            valid = false;
+        }
+        identifier = email;
 
-    // Basic front-end validation
-    let valid = true;
+        if (!passwordInput.value || passwordInput.value.length < 6) {
+            markInvalid(passwordInput);
+            valid = false;
+        }
 
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        markInvalid(emailInput);
-        valid = false;
-    }
-    if (!password || password.length < 6) {
-        markInvalid(passwordInput);
-        valid = false;
-    }
-    if (!valid) {
-        showError("Please enter a valid email and password (min 6 characters).");
-        return;
+        if (!valid) {
+            showError("Please enter a valid email and password (min 6 characters).");
+            return;
+        }
+    } else {
+        const phone = phoneInput.value.trim();
+        if (!phone || phone.length < 7) {
+            markInvalid(phoneInput);
+            valid = false;
+        }
+        identifier = countryCodeSelect.value + phone;
+
+        if (otpSent) {
+            if (!otpInput.value || otpInput.value.length < 6) {
+                markInvalid(otpInput);
+                valid = false;
+            }
+        }
+
+        if (!valid) {
+            showError("Please enter a valid mobile number" + (otpSent ? " and OTP." : "."));
+            return;
+        }
     }
 
     setLoading(signinBtn, true);
 
     try {
-        const { data, error } = await sb.auth.signInWithPassword({ email, password });
+        if (authMode === "email") {
+            const { data, error } = await sb.auth.signInWithPassword({ email: identifier, password: passwordInput.value });
 
-        if (error) {
-            // Friendly error messages
-            const msg = error.message.includes("Invalid login credentials")
-                ? "Incorrect email or password. Please try again."
-                : error.message.includes("Email not confirmed")
-                    ? "Please confirm your email before signing in."
-                    : error.message;
+            if (error) {
+                const msg = error.message.includes("Invalid login")
+                    ? "Incorrect email or password. Please try again."
+                    : error.message.includes("not confirmed")
+                        ? "Please confirm your email before signing in."
+                        : error.message;
+                showError(msg);
+                if (error.message.includes("credentials")) markInvalid(passwordInput);
+            } else if (data.user) {
+                showSuccess("Signed in! Redirecting…");
+                setTimeout(() => window.location.replace(getRedirectUrl()), 800);
+            }
+        } else {
+            if (!otpSent) {
+                // Send OTP
+                const { error } = await sb.auth.signInWithOtp({ phone: identifier });
 
-            showError(msg);
-            if (error.message.includes("credentials")) markInvalid(passwordInput);
-        } else if (data.user) {
-            showSuccess("Signed in! Redirecting…");
-            setTimeout(() => window.location.replace(getRedirectUrl()), 800);
+                if (error) {
+                    showError(error.message);
+                } else {
+                    otpSent = true;
+                    showSuccess("OTP sent to your mobile number.");
+
+                    // Switch UI
+                    phoneInput.disabled = true;
+                    countryCodeSelect.disabled = true;
+                    otpGroup.style.display = "block";
+                    signinBtnText.textContent = "Verify & Login";
+                    setTimeout(() => otpInput.focus(), 100);
+                }
+            } else {
+                // Verify OTP
+                const { data, error } = await sb.auth.verifyOtp({ phone: identifier, token: otpInput.value.trim(), type: 'sms' });
+
+                if (error) {
+                    showError("Invalid or expired OTP. Please try again.");
+                    markInvalid(otpInput);
+                } else if (data.user) {
+                    showSuccess("Signed in! Redirecting…");
+                    setTimeout(() => window.location.replace(getRedirectUrl()), 800);
+                }
+            }
         }
     } catch (err) {
         showError("Something went wrong. Please try again.");
@@ -215,6 +277,103 @@ eyeToggle.addEventListener("click", () => {
     eyeIcon.innerHTML = isPassword ? eyeCloseSvg : eyeOpenSvg;
     eyeToggle.setAttribute("aria-label", isPassword ? "Hide password" : "Show password");
 });
+
+// ── Authentication Mode Toggle & Fetch Country Codes ──
+modeEmailBtn.addEventListener("click", () => {
+    if (otpSent) {
+        if (!confirm("Cancel mobile login and switch to email?")) return;
+        resetPhoneUI();
+    }
+    authMode = "email";
+    modeEmailBtn.style.background = "#222";
+    modeEmailBtn.style.color = "#fff";
+    modePhoneBtn.style.background = "transparent";
+    modePhoneBtn.style.color = "#888";
+    emailGroup.style.display = "block";
+    passwordGroup.style.display = "block";
+    phoneGroup.style.display = "none";
+    otpGroup.style.display = "none";
+    signinBtnText.textContent = "Sign In";
+});
+
+function resetPhoneUI() {
+    otpSent = false;
+    phoneInput.disabled = false;
+    countryCodeSelect.disabled = false;
+    otpGroup.style.display = "none";
+    otpInput.value = "";
+}
+
+const comingSoonModal = document.getElementById("coming-soon-modal");
+const comingSoonClose = document.getElementById("coming-soon-close");
+const comingSoonOk = document.getElementById("coming-soon-ok");
+const comingSoonCard = document.getElementById("coming-soon-card");
+
+function openComingSoon() {
+    comingSoonModal.setAttribute("aria-hidden", "false");
+    comingSoonModal.style.pointerEvents = "auto";
+    requestAnimationFrame(() => {
+        comingSoonModal.style.opacity = "1";
+        comingSoonCard.style.transform = "translateY(0)";
+    });
+}
+
+function closeComingSoon() {
+    comingSoonModal.style.opacity = "0";
+    comingSoonCard.style.transform = "translateY(20px)";
+    comingSoonModal.style.pointerEvents = "none";
+    setTimeout(() => {
+        comingSoonModal.setAttribute("aria-hidden", "true");
+    }, 300);
+}
+
+comingSoonClose.addEventListener("click", closeComingSoon);
+comingSoonOk.addEventListener("click", closeComingSoon);
+comingSoonModal.addEventListener("click", (e) => {
+    if (e.target === comingSoonModal) closeComingSoon();
+});
+
+modePhoneBtn.addEventListener("click", () => {
+    openComingSoon();
+    return;
+
+    authMode = "phone";
+    modePhoneBtn.style.background = "#222";
+    modePhoneBtn.style.color = "#fff";
+    modeEmailBtn.style.background = "transparent";
+    modeEmailBtn.style.color = "#888";
+    phoneGroup.style.display = "block";
+    emailGroup.style.display = "none";
+    passwordGroup.style.display = "none";
+    signinBtnText.textContent = otpSent ? "Verify & Login" : "Send OTP";
+    if (otpSent) otpGroup.style.display = "block";
+});
+
+// Fetch all country codes dynamically
+fetch("https://restcountries.com/v3.1/all?fields=idd,cca2,flag")
+    .then(res => res.json())
+    .then(data => {
+        const codes = [];
+        data.forEach(c => {
+            if (c.idd && c.idd.root) {
+                const root = c.idd.root;
+                const suffixes = c.idd.suffixes ? c.idd.suffixes : [""];
+                suffixes.forEach(s => {
+                    codes.push({ dialCode: root + s, code: c.cca2, flag: c.flag });
+                });
+            }
+        });
+        // Sort by code length or dialCode
+        codes.sort((a, b) => a.dialCode.localeCompare(b.dialCode));
+
+        let html = '<option value="+1">🇺🇸 +1 (USA)</option><option value="+44">🇬🇧 +44 (UK)</option><option value="+91">🇮🇳 +91 (IND)</option><option disabled>──────</option>';
+        codes.forEach(c => {
+            html += `<option value="${c.dialCode}">${c.flag} ${c.dialCode} (${c.code})</option>`;
+        });
+        countryCodeSelect.innerHTML = html;
+        countryCodeSelect.value = '+91'; // default to India based on previous requests
+    })
+    .catch(e => console.log("Failed to load country codes.", e));
 
 // ── Forgot Password Modal ──────────────────────────────
 

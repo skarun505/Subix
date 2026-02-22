@@ -8,8 +8,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Populate mobile menu with links from desktop nav, if empty
         const desktopLinks = document.querySelector('.nav-links:not(.mobile-menu)');
+        const desktopCta = document.querySelector('.nav-cta-slot');
+
         if (desktopLinks && mobileMenu.children.length === 0) {
             mobileMenu.innerHTML = desktopLinks.innerHTML;
+
+            // Add the CTA/Profile slot to the mobile menu as the last item
+            if (desktopCta) {
+                const li = document.createElement('li');
+                li.innerHTML = desktopCta.innerHTML;
+                mobileMenu.appendChild(li);
+            }
         }
 
         // Toggle functionality
@@ -148,6 +157,8 @@ if (rawSession) {
                         <i class="fas fa-chevron-down" style="font-size: 12px; margin-left: 5px; color: #888;"></i>
                     </div>
                     <div class="profile-dropdown" style="display: none; position: absolute; top: calc(100% + 10px); right: 0; background: #0a0a0a; border: 1px solid #333; border-radius: 12px; padding: 1rem; width: max-content; min-width: 250px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); z-index: 9999; text-align: left;">
+                        <!-- Transparent hover bridge -->
+                        <div style="position: absolute; top: -15px; left: 0; right: 0; height: 15px; background: transparent;"></div>
                         <div style="margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem;">
                             <div style="width: 40px; height: 40px; background: var(--primary-lime, #ccff00); color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px;">
                                 ${displayChar}
@@ -172,18 +183,122 @@ if (rawSession) {
             const logoutBtn = li.querySelector('.logout-btn');
             const editBtn = li.querySelector('.edit-btn');
 
-            // Hover functionality
+            let timeout;
             li.addEventListener('mouseenter', () => {
+                clearTimeout(timeout);
                 widget.style.background = '#222';
                 dropdown.style.display = 'block';
             });
             li.addEventListener('mouseleave', () => {
-                widget.style.background = '#111';
-                dropdown.style.display = 'none';
+                timeout = setTimeout(() => {
+                    widget.style.background = '#111';
+                    dropdown.style.display = 'none';
+                }, 300);
             });
 
             editBtn.addEventListener('click', () => {
-                alert("Edit Profile interface is in development. You can edit your details soon!");
+                dropdown.style.display = 'none';
+
+                if (document.getElementById('subix-edit-modal')) return;
+
+                const editModalHtml = `
+                    <div id="subix-edit-modal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 100000; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.4s ease;">
+                        <div style="background: #0a0a0a; border: 1px solid #333; border-radius: 20px; padding: 2.5rem; max-width: 400px; width: 90%; text-align: left; box-shadow: 0 20px 50px rgba(0,0,0,0.5); transform: translateY(20px); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                                <h3 style="margin: 0; font-size: 1.5rem; color: #fff; font-family: 'Space Grotesk', sans-serif;">Edit Profile</h3>
+                                <button id="close-edit-modal" style="background: transparent; border: none; color: #888; cursor: pointer; font-size: 1.5rem; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#888'">&times;</button>
+                            </div>
+                            <div style="margin-bottom: 2rem;">
+                                <label style="display: block; color: #aaa; margin-bottom: 0.5rem; font-size: 0.9rem;">Display Name</label>
+                                <input type="text" id="edit-name-input" value="${name}" style="width: 100%; padding: 1rem; border-radius: 12px; border: 1px solid #333; background: #111; color: #fff; outline: none; font-family: 'Inter', sans-serif; transition: border-color 0.3s;" onfocus="this.style.borderColor='var(--primary-lime, #ccff00)'" onblur="this.style.borderColor='#333'">
+                                
+                                <label style="display: block; color: #aaa; margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem;">Mobile Number</label>
+                                <input type="tel" id="edit-phone-input" value="${meta.phone || ''}" placeholder="+91 9876543210" style="width: 100%; padding: 1rem; border-radius: 12px; border: 1px solid #333; background: #111; color: #fff; outline: none; font-family: 'Inter', sans-serif; transition: border-color 0.3s;" onfocus="this.style.borderColor='var(--primary-lime, #ccff00)'" onblur="this.style.borderColor='#333'">
+                                
+                                <label style="display: block; color: #aaa; margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem;">Organization / Company</label>
+                                <input type="text" id="edit-org-input" value="${meta.organization || ''}" placeholder="E.g. Subix Inc." style="width: 100%; padding: 1rem; border-radius: 12px; border: 1px solid #333; background: #111; color: #fff; outline: none; font-family: 'Inter', sans-serif; transition: border-color 0.3s;" onfocus="this.style.borderColor='var(--primary-lime, #ccff00)'" onblur="this.style.borderColor='#333'">
+                            </div>
+                            <button id="save-edit-btn" style="width: 100%; background: var(--primary-lime, #ccff00); color: #000; border: none; padding: 1rem; border-radius: 50px; font-weight: bold; font-size: 1rem; cursor: pointer; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+                                Save Changes
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                document.body.insertAdjacentHTML('beforeend', editModalHtml);
+                const modal = document.getElementById('subix-edit-modal');
+                const closeBtn = document.getElementById('close-edit-modal');
+                const saveBtn = document.getElementById('save-edit-btn');
+                const nameInput = document.getElementById('edit-name-input');
+                const phoneInput = document.getElementById('edit-phone-input');
+                const orgInput = document.getElementById('edit-org-input');
+
+                // Animate In
+                setTimeout(() => {
+                    modal.style.opacity = '1';
+                    modal.querySelector('div').style.transform = 'translateY(0)';
+                }, 10);
+
+                const closeModal = () => {
+                    modal.style.opacity = '0';
+                    modal.querySelector('div').style.transform = 'translateY(20px)';
+                    setTimeout(() => modal.remove(), 400);
+                };
+
+                closeBtn.addEventListener('click', closeModal);
+
+                saveBtn.addEventListener('click', async () => {
+                    const newName = nameInput.value.trim();
+                    if (!newName) return;
+
+                    saveBtn.textContent = 'Saving...';
+                    saveBtn.style.opacity = '0.7';
+                    saveBtn.disabled = true;
+
+                    try {
+                        const SUPABASE_URL = "https://xrlqmngxxtbjxrkliypa.supabase.co";
+                        // Using the global Supabase anon key here 
+                        const ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhybHFtbmd4eHRianhya2xpeXBhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3MzI3MTUsImV4cCI6MjA4NzMwODcxNX0.qUBlRGyY8u-gUOkAjGvgKRrK36uzMuVMZj9Qs2zODQc";
+
+                        const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer ' + sessionData.access_token,
+                                'apikey': ANON_KEY
+                            },
+                            body: JSON.stringify({
+                                data: {
+                                    full_name: newName,
+                                    name: newName,
+                                    phone: phoneInput.value.trim(),
+                                    organization: orgInput.value.trim()
+                                }
+                            })
+                        });
+
+                        if (res.ok) {
+                            const updatedUser = await res.json();
+
+                            // Update local storage directly
+                            const currentSession = JSON.parse(localStorage.getItem(AUTH_KEY));
+                            currentSession.user = updatedUser;
+                            localStorage.setItem(AUTH_KEY, JSON.stringify(currentSession));
+
+                            saveBtn.textContent = 'Saved Successfully!';
+                            setTimeout(() => window.location.reload(), 600);
+                        } else {
+                            throw new Error('Update failed');
+                        }
+                    } catch (e) {
+                        saveBtn.textContent = 'Failed to save';
+                        setTimeout(() => {
+                            saveBtn.textContent = 'Save Changes';
+                            saveBtn.style.opacity = '1';
+                            saveBtn.disabled = false;
+                        }, 2000);
+                    }
+                });
             });
 
             logoutBtn.addEventListener('click', () => {
